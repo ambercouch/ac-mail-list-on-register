@@ -31,7 +31,7 @@ defined('ABSPATH') or die('You do not have the required permissions');
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-define('ACSIBR_KEY', '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');
+define('ACSIBR_KEY', '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');
 
 // Define path and URL to the ACF plugin.
 //define( 'MY_ACF_PATH', 'inc/acf/' );
@@ -60,6 +60,8 @@ function my_acf_settings_show_admin( $show_admin ) {
 
 // Include the plugin-code.
 require_once(  'lib/acsibr.php' );
+
+
 
 
 

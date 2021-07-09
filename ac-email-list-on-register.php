@@ -26,12 +26,18 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+//echo 'momento mori';
+////
+////$options = get_option('acelr_sib_key');
+////// output the title
+////var_dump($options);
+////die();
 
 defined('ABSPATH') or die('You do not have the required permissions');
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-define('ACSIBR_KEY', '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');
+define('ACSIBR_KEY', get_option('acelr_sib_key'));
 define( 'AC_EMAIL_LIST_ON_REGISTRATION_PLUGIN_VERSION', '1.0.0' );
 
 // Define path and URL to the ACF plugin.

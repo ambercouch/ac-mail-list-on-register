@@ -28,21 +28,13 @@ add_action( 'admin_menu', 'acelr_add_option_menu' );
 
 function codeinwp_register_settings() {
     register_setting(
-        'codeinwp_settings',
-        'codeinwp_analytics_status',
-        array(
-            'type'         => 'boolean',
-            'show_in_rest' => true,
-            'default'      => false,
-        )
-    );
-
-    register_setting(
-        'codeinwp_settings',
-        'codeinwp_analytics_key',
+        'acelr_settings',
+        'acelr_sib_key',
         array(
             'type'         => 'string',
             'show_in_rest' => true,
+            'description' => 'API key for Sendinblue'
+
         )
     );
 }

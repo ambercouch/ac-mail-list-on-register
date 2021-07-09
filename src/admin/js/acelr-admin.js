@@ -30,8 +30,7 @@ class App extends Component {
         this.state = {
             isAPILoaded: false,
             isAPISaving: false,
-            codeinwp_analytics_status: false,
-            codeinwp_analytics_key: ''
+            acelr_sib_key: ''
         };
     }
 
@@ -42,8 +41,7 @@ class App extends Component {
             if ( false === this.state.isAPILoaded ) {
                 this.settings.fetch().then( response => {
                     this.setState({
-                        codeinwp_analytics_status: Boolean( response.codeinwp_analytics_status ),
-                        codeinwp_analytics_key: response.codeinwp_analytics_key,
+                        acelr_sib_key: response.acelr_sib_key,
                         isAPILoaded: true
                     });
                 });
@@ -100,10 +98,10 @@ class App extends Component {
                                 <input
                                     type="text"
                                     id="codeinwp-options-google-analytics-api"
-                                    value={ this.state.codeinwp_analytics_key }
-                                    placeholder={ __( 'Google Analytics API Key' ) }
+                                    value={ this.state.acelr_sib_key }
+                                    placeholder={ __( 'Sendinblue API key' ) }
                                     disabled={ this.state.isAPISaving }
-                                    onChange={ e => this.setState({ codeinwp_analytics_key: e.target.value }) }
+                                    onChange={ e => this.setState({ acelr_sib_key: e.target.value }) }
                                 />
 
                                 <div className="codeinwp-text-field-button-group">
@@ -111,13 +109,13 @@ class App extends Component {
                                         isPrimary
                                         isLarge
                                         disabled={ this.state.isAPISaving }
-                                        onClick={ () => this.changeOptions( 'codeinwp_analytics_key', this.state.codeinwp_analytics_key ) }
+                                        onClick={ () => this.changeOptions( 'acelr_sib_key', this.state.acelr_sib_key ) }
                                     >
                                         { __( 'Save' ) }
                                     </Button>
 
                                     <ExternalLink href="#">
-                                        { __( 'Get API Key' ) }
+                                        { __( 'Get you Sendinblue API Key' ) }
                                     </ExternalLink>
                                 </div>
                             </BaseControl>

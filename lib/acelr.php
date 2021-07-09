@@ -1,5 +1,7 @@
 <?php
 
+require_once ('admin/acelr_admin.php');
+
 /*
  * acsibr_register_form()
  * Add fields to the registration form

@@ -63,13 +63,13 @@ function acelr_user_register($user_id)
 
     if(isset($_POST['register_terms_agree']))
     {
-        acmlr_send_to_list($acelr_user);
+        acelr_send_to_list($acelr_user);
     }else{
-        acmlr_send_to_list($acelr_user);
+        acelr_send_to_list($acelr_user);
     }
     }
 
-function acmlr_send_to_list($acelr_user){
+function acelr_send_to_list($acelr_user){
 
     $credentials = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', ACSIBR_KEY);
 

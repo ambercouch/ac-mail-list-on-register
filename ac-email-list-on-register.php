@@ -1,13 +1,13 @@
 <?php
 /*
-  Plugin Name: AC Sendinblue on register
+  Plugin Name: AC email list on register
   Plugin URI: https://github.com/ambercouch/ac-wp-simple-modal
   Description: Add your user to Sendinblue when they register
   Version: 0.1.0
   Author: AmberCouch
   Author URI: http://ambercouch.co.uk
   Author Email: richard@ambercouch.co.uk
-  Text Domain: acsibr
+  Text Domain: acelr
   Domain Path: /lang/
   License:
   Copyright 2018 AmberCouch
@@ -32,6 +32,7 @@ defined('ABSPATH') or die('You do not have the required permissions');
 require_once(__DIR__ . '/vendor/autoload.php');
 
 define('ACSIBR_KEY', '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');
+define( 'AC_EMAIL_LIST_ON_REGISTRATION_PLUGIN_VERSION', '1.0.0' );
 
 // Define path and URL to the ACF plugin.
 //define( 'MY_ACF_PATH', 'inc/acf/' );
@@ -59,7 +60,7 @@ function my_acf_settings_show_admin( $show_admin ) {
 }
 
 // Include the plugin-code.
-require_once(  'lib/acsibr.php' );
+require_once(  'lib/acelr.php' );
 
 
 

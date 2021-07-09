@@ -1,0 +1,41 @@
+{
+  "name": "ac-email-list-on-register",
+  "description": "A WordPress plugin adds a user to your email list.",
+  "homepage": "https://github.com/ambercouch/aac-email-list-on-register",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "jquery",
+    "javascript",
+    "php",
+    "sendinblue",
+    "email list"
+  ],
+  "author": "Richie Arnold <richard@ambercouch.co.uk>",
+  "contributors": [],
+  "dependencies": [],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ambercouch/ac-email-list-on-register.git"
+  },
+  "main": "ac-email-list-on-register.php",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "autoprefixer": "^9.0.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "browser-sync": "^2.26.14",
+    "cssnano": "^3.10.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
+    "js-cookie": "^2.2.1",
+    "modaal": "^0.4.4",
+    "readable-stream": "^3.6.0"
+  }
+}

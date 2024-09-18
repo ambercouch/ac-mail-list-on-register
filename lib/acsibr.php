@@ -24,8 +24,7 @@ if(isset($_POST['register_terms_agree']))
             'isVIP' => 'true'
         ],
         'listIds' => [
-            2,
-            5
+            6,
         ]
     ]);
 

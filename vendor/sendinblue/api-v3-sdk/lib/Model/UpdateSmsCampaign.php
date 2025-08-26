@@ -61,7 +61,7 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
         'sender' => 'string',
         'content' => 'string',
         'recipients' => '\SendinBlue\Client\Model\CreateSmsCampaignRecipients',
-        'scheduledAt' => '\DateTime'
+        'scheduledAt' => 'string'
     ];
 
     /**
@@ -74,7 +74,7 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
         'sender' => null,
         'content' => null,
         'recipients' => null,
-        'scheduledAt' => 'date-time'
+        'scheduledAt' => null
     ];
 
     /**
@@ -213,8 +213,8 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
     {
         $invalidProperties = [];
 
-        if (!is_null($this->container['sender']) && (mb_strlen($this->container['sender']) > 11)) {
-            $invalidProperties[] = "invalid value for 'sender', the character length must be smaller than or equal to 11.";
+        if (!is_null($this->container['sender']) && (mb_strlen($this->container['sender']) > 15)) {
+            $invalidProperties[] = "invalid value for 'sender', the character length must be smaller than or equal to 15.";
         }
 
         return $invalidProperties;
@@ -269,14 +269,14 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
     /**
      * Sets sender
      *
-     * @param string $sender Name of the sender. The number of characters is limited to 11
+     * @param string $sender Name of the sender. **The number of characters is limited to 11 for alphanumeric characters and 15 for numeric characters**
      *
      * @return $this
      */
     public function setSender($sender)
     {
-        if (!is_null($sender) && (mb_strlen($sender) > 11)) {
-            throw new \InvalidArgumentException('invalid length for $sender when calling UpdateSmsCampaign., must be smaller than or equal to 11.');
+        if (!is_null($sender) && (mb_strlen($sender) > 15)) {
+            throw new \InvalidArgumentException('invalid length for $sender when calling UpdateSmsCampaign., must be smaller than or equal to 15.');
         }
 
         $this->container['sender'] = $sender;
@@ -335,7 +335,7 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
     /**
      * Gets scheduledAt
      *
-     * @return \DateTime
+     * @return string
      */
     public function getScheduledAt()
     {
@@ -345,7 +345,7 @@ class UpdateSmsCampaign implements ModelInterface, ArrayAccess
     /**
      * Sets scheduledAt
      *
-     * @param \DateTime $scheduledAt UTC date-time on which the campaign has to run (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
+     * @param string $scheduledAt UTC date-time on which the campaign has to run (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
      *
      * @return $this
      */

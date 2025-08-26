@@ -57,7 +57,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'eventTime' => '\DateTime',
+        'eventTime' => 'string',
         'ip' => 'string'
     ];
 
@@ -67,7 +67,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'eventTime' => 'date-time',
+        'eventTime' => null,
         'ip' => null
     ];
 
@@ -198,9 +198,6 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
         if ($this->container['eventTime'] === null) {
             $invalidProperties[] = "'eventTime' can't be null";
         }
-        if ($this->container['ip'] === null) {
-            $invalidProperties[] = "'ip' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -219,7 +216,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
     /**
      * Gets eventTime
      *
-     * @return \DateTime
+     * @return string
      */
     public function getEventTime()
     {
@@ -229,7 +226,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
     /**
      * Sets eventTime
      *
-     * @param \DateTime $eventTime UTC date-time of the event
+     * @param string $eventTime UTC date-time of the event
      *
      * @return $this
      */

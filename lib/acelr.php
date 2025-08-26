@@ -69,34 +69,29 @@ function acelr_user_register($user_id)
     }
     }
 
-function acelr_send_to_list($acelr_user){
+function acelr_send_to_list(array $acelr_user) {
+    $config = \ACSB\Vendor\SendinBlue\Client\Configuration::getDefaultConfiguration()
+                                                          ->setApiKey('api-key', ACSIBR_KEY);
 
-    $credentials = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', ACSIBR_KEY);
+    $http = new \ACSB\Vendor\GuzzleHttp\Client();
+    $api  = new \ACSB\Vendor\SendinBlue\Client\Api\ContactsApi($http, $config);
 
-    $apiInstance = new SendinBlue\Client\Api\ContactsApi(new GuzzleHttp\Client(), $credentials);
-
-    $createContact = new \SendinBlue\Client\Model\CreateContact([
-        'email' => $acelr_user['email'],
+    $payload = new \ACSB\Vendor\SendinBlue\Client\Model\CreateContact([
+        'email'         => $acelr_user['email']      ?? '',
         'updateEnabled' => true,
-        'attributes' => (object)[
-            'FIRSTNAME' => $acelr_user['first_name'],
-            'LASTNAME' => $acelr_user['last_name'],
-            'isVIP' => 'true'
+        'attributes'    => [
+            'FIRSTNAME' => $acelr_user['first_name'] ?? '',
+            'LASTNAME'  => $acelr_user['last_name']  ?? '',
+            'isVIP'     => true,
         ],
-        'listIds' => [
-            2
-        ]
+        'listIds'       => [2],
     ]);
 
-    try
-    {
-        $result = $apiInstance->createContact($createContact);
-        print_r($result);
-    } catch (Exception $e)
-    {
-        echo "<pre>";
-        print_r($e);
-        echo 'Exception when calling ContactsApi->createContact: ', $e->getMessage(), PHP_EOL;
-        echo "</pre>";
+    try {
+        return $api->createContact($payload);
+    } catch (\Throwable $e) {
+        error_log('ContactsApi->createContact failed: ' . $e->getMessage());
+        return false;
     }
 }
+

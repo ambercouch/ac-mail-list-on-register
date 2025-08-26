@@ -14,8 +14,12 @@
     },
     "scripts": {
         "build": [
-            "php vendor/humbug/php-scoper/bin/php-scoper add-prefix --config=scoper.inc.php --force --output-dir=build",
-            "composer dump-autoload -o -d build"
+            "php -r \"@mkdir('build'); @mkdir('build/vendor');\"",
+            "php vendor/humbug/php-scoper/bin/php-scoper add-prefix vendor --config=scoper.inc.php --force --output-dir=build/vendor",
+            "php -r \"copy('vendor/autoload.php','build/vendor/autoload.php');\""
+        ],
+        "clean": [
+            "php -r \"function rrmdir($d){if(!is_dir($d))return; $it=new RecursiveIteratorIterator(new RecursiveDirectoryIterator($d,FilesystemIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST); foreach($it as $f){$f->isDir()?rmdir($f):unlink($f);} rmdir($d);} rrmdir('build'); rrmdir('vendor'); if(file_exists('composer.lock')) unlink('composer.lock');\""
         ]
     }
 }

@@ -4,28 +4,21 @@ declare(strict_types=1);
 use Isolated\Symfony\Component\Finder\Finder;
 
 return [
-    // All third-party deps (your vendor/) will be moved under this prefix
+    // All *third-party* code will live under this private prefix:
     'prefix' => 'ACSB\\Vendor',
 
-    // Scope ONLY vendor/ (leave your plugin code alone)
+    // Scope only the dependencies (vendor/) — not your plugin code
     'finders' => [
+        // Everything under vendor/
         Finder::create()
               ->files()
               ->ignoreVCS(true)
               ->in(__DIR__ . '/vendor')
-              ->exclude('humbug') // don't scope php-scoper itself if present
+              ->exclude('humbug') // don't scope scoper itself
               ->exclude('bin'),
-
-        // Include Composer runtime bits so the build is self-contained
-        Finder::create()
-              ->files()
-              ->name('installed.php')
-              ->name('autoload.php')
-              ->name('ClassLoader.php')
-              ->in(__DIR__ . '/vendor/composer'),
     ],
 
-    // We don't need to share any public API; keep everything isolated:
+    // Keep everything isolated; we don't expose shared symbols
     'expose-global-constants' => false,
     'expose-global-classes'   => false,
     'expose-global-functions' => false,
@@ -34,6 +27,5 @@ return [
     'expose-functions'        => [],
     'expose-constants'        => [],
 
-    // No patchers needed for Sendinblue/Guzzle in typical WP use
     'patchers' => [],
 ];

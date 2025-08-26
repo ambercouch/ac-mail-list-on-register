@@ -70,6 +70,21 @@ function acelr_user_register($user_id)
     }
 
 function acelr_send_to_list(array $acelr_user) {
+
+    // Load the scoped build first; dev vendor as a fallback
+    if (!class_exists(\ACSB\Vendor\SendinBlue\Client\Api\ContactsApi::class)) {
+        $build = __DIR__ . '/build/vendor/autoload.php';
+        $dev   = __DIR__ . '/vendor/autoload.php';
+        if (file_exists($build)) {
+            require_once $build;
+        } elseif (file_exists($dev)) {
+            require_once $dev;
+        } else {
+            error_log('AC SIB: no autoloader found (build/vendor missing)');
+            return false;
+        }
+    }
+
     $config = \ACSB\Vendor\SendinBlue\Client\Configuration::getDefaultConfiguration()
                                                           ->setApiKey('api-key', ACSIBR_KEY);
 
@@ -82,7 +97,7 @@ function acelr_send_to_list(array $acelr_user) {
         'attributes'    => [
             'FIRSTNAME' => $acelr_user['first_name'] ?? '',
             'LASTNAME'  => $acelr_user['last_name']  ?? '',
-            'isVIP'     => true,
+            'isVIP'     => true
         ],
         'listIds'       => [2],
     ]);
@@ -90,8 +105,9 @@ function acelr_send_to_list(array $acelr_user) {
     try {
         return $api->createContact($payload);
     } catch (\Throwable $e) {
-        error_log('ContactsApi->createContact failed: ' . $e->getMessage());
+        error_log('AC SIB: ContactsApi->createContact failed: ' . $e->getMessage());
         return false;
     }
 }
+
 

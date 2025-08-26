@@ -35,13 +35,6 @@
 
 defined('ABSPATH') or die('You do not have the required permissions');
 
-if (file_exists(__DIR__ . '/build/vendor/autoload.php')) {
-    require_once __DIR__ . '/build/vendor/autoload.php';
-} else {
-    require_once __DIR__ . '/vendor/autoload.php'; // dev fallback
-}
-
-
 define('ACSIBR_KEY', get_option('acelr_sib_key'));
 //define('ACSIBR_KEY', '');
 define( 'AC_EMAIL_LIST_ON_REGISTRATION_PLUGIN_VERSION', '1.0.0' );

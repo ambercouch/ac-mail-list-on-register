@@ -67,45 +67,62 @@ function acelr_user_register($user_id)
     }else{
         acelr_send_to_list($acelr_user);
     }
-    }
+
+}
 
 function acelr_send_to_list(array $acelr_user) {
+    error_log('AC SIB: acelr_send_to_list start');
 
-    // Load the scoped build first; dev vendor as a fallback
-    if (!class_exists(\ACSB\Vendor\SendinBlue\Client\Api\ContactsApi::class)) {
-        $build = __DIR__ . '/build/vendor/autoload.php';
-        $dev   = __DIR__ . '/vendor/autoload.php';
-        if (file_exists($build)) {
-            require_once $build;
-        } elseif (file_exists($dev)) {
-            require_once $dev;
-        } else {
-            error_log('AC SIB: no autoloader found (build/vendor missing)');
-            return false;
-        }
+    if (!acelr_require_sdk()) {
+        error_log('AC SIB: autoloader not found');
+        return false;
+    }
+    if (!defined('ACSIBR_KEY') || !ACSIBR_KEY) {
+        error_log('AC SIB: ACSIBR_KEY not defined');
+        return false;
     }
 
-    $config = \ACSB\Vendor\SendinBlue\Client\Configuration::getDefaultConfiguration()
-                                                          ->setApiKey('api-key', ACSIBR_KEY);
-
-    $http = new \ACSB\Vendor\GuzzleHttp\Client();
-    $api  = new \ACSB\Vendor\SendinBlue\Client\Api\ContactsApi($http, $config);
-
-    $payload = new \ACSB\Vendor\SendinBlue\Client\Model\CreateContact([
-        'email'         => $acelr_user['email']      ?? '',
-        'updateEnabled' => true,
-        'attributes'    => [
-            'FIRSTNAME' => $acelr_user['first_name'] ?? '',
-            'LASTNAME'  => $acelr_user['last_name']  ?? '',
-            'isVIP'     => true
-        ],
-        'listIds'       => [2],
-    ]);
-
     try {
-        return $api->createContact($payload);
+        $config = \ACSB\Vendor\SendinBlue\Client\Configuration::getDefaultConfiguration()
+                                                              ->setApiKey('api-key', ACSIBR_KEY);
+
+        // Optional timeouts keep registration snappy even if API is slow
+        $http = new \ACSB\Vendor\GuzzleHttp\Client([
+            'timeout' => 8,
+            'connect_timeout' => 4,
+        ]);
+
+        $api = new \ACSB\Vendor\SendinBlue\Client\Api\ContactsApi($http, $config);
+
+        $payloadArr = [
+            'email'         => (string)($acelr_user['email'] ?? ''),
+            'updateEnabled' => true,
+            'attributes'    => [
+                'FIRSTNAME' => (string)($acelr_user['first_name'] ?? ''),
+                'LASTNAME'  => (string)($acelr_user['last_name'] ?? ''),
+                'isVIP'     => true,
+            ],
+            'listIds'       => [2], // TODO: confirm this is the correct list ID in SIB/Brevo
+        ];
+
+        $payload = new \ACSB\Vendor\SendinBlue\Client\Model\CreateContact($payloadArr);
+
+        $result = $api->createContact($payload);
+
+        // Log something lightweight from the result if available
+        if (is_object($result) && method_exists($result, 'getId')) {
+            error_log('AC SIB: createContact OK, id=' . $result->getId());
+        } else {
+            error_log('AC SIB: createContact OK');
+        }
+        return $result;
+
+    } catch (\ACSB\Vendor\SendinBlue\Client\ApiException $e) {
+        $body = method_exists($e, 'getResponseBody') ? json_encode($e->getResponseBody()) : '';
+        error_log('AC SIB: API error '.$e->getCode().': '.$e->getMessage().' body='.$body);
+        return false;
     } catch (\Throwable $e) {
-        error_log('AC SIB: ContactsApi->createContact failed: ' . $e->getMessage());
+        error_log('AC SIB: unexpected error: ' . $e->getMessage());
         return false;
     }
 }

@@ -27,17 +27,44 @@
  */
 
 //echo 'momento mori';
-////
-////$options = get_option('acelr_sib_key');
-////// output the title
-////var_dump($options);
-////die();
+//
+//$options = get_option('acelr_sib_key');
+//// output the title
+//var_dump($options);
+//die();
 
 defined('ABSPATH') or die('You do not have the required permissions');
+
+// Absolute paths to the plugin root and autoloaders
+if (!defined('ACELR_PLUGIN_FILE'))  define('ACELR_PLUGIN_FILE', __FILE__);
+if (!defined('ACELR_PLUGIN_DIR'))   define('ACELR_PLUGIN_DIR', plugin_dir_path(ACELR_PLUGIN_FILE));
+if (!defined('ACELR_BUILD_AUTOLOAD')) define('ACELR_BUILD_AUTOLOAD', ACELR_PLUGIN_DIR . 'build/vendor/autoload.php');
+if (!defined('ACELR_DEV_AUTOLOAD'))   define('ACELR_DEV_AUTOLOAD',   ACELR_PLUGIN_DIR . 'vendor/autoload.php');
+
 
 define('ACSIBR_KEY', get_option('acelr_sib_key'));
 //define('ACSIBR_KEY', '');
 define( 'AC_EMAIL_LIST_ON_REGISTRATION_PLUGIN_VERSION', '1.0.0' );
+
+
+/**
+ * Load the scoped (build) autoloader, or fall back to dev vendor locally.
+ */
+function acelr_require_sdk(): bool {
+    if (class_exists(\ACSB\Vendor\SendinBlue\Client\Api\ContactsApi::class)) {
+        return true; // already loaded
+    }
+    if (file_exists(ACELR_BUILD_AUTOLOAD)) {
+        require_once ACELR_BUILD_AUTOLOAD;
+        return true;
+    }
+    if (file_exists(ACELR_DEV_AUTOLOAD)) {
+        require_once ACELR_DEV_AUTOLOAD;
+        return true;
+    }
+    error_log('AC SIB: autoloader not found at ' . ACELR_BUILD_AUTOLOAD . ' or ' . ACELR_DEV_AUTOLOAD);
+    return false;
+}
 
 // Define path and URL to the ACF plugin.
 //define( 'MY_ACF_PATH', 'inc/acf/' );
